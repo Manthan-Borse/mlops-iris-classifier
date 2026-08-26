@@ -44,7 +44,7 @@ def evaluate_model(model, X_test, y_test):
 def main():
     X_train, X_test, y_train, y_test = load_data()
 
-    model = train_model(X_train, y_train, n_estimators=200)
+model = train_model(X_train, y_train, n_estimators=200)
 
     acc, report = evaluate_model(model, X_test, y_test)
 

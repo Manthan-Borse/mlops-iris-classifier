@@ -1,10 +1,14 @@
+
 """
 train.py
-Baseline training script for the Iris classifier.
-Used to demonstrate a version-controlled ML project structure.
+Iris classifier with MLflow experiment tracking.
 """
 
+import os
 import joblib
+import mlflow
+import mlflow.sklearn
+
 from sklearn.datasets import load_iris
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
@@ -42,17 +46,38 @@ def evaluate_model(model, X_test, y_test):
 
 
 def main():
+    mlflow.set_experiment("Iris_Classifier_Experiments")
+
     X_train, X_test, y_train, y_test = load_data()
 
-    model = train_model(X_train, y_train)
+    n_estimators = 50
+    max_depth = 3
 
-    acc, report = evaluate_model(model, X_test, y_test)
+    with mlflow.start_run():
+        mlflow.log_param("n_estimators", n_estimators)
+        mlflow.log_param("max_depth", str(max_depth))
 
-    print(f"Accuracy: {acc:.4f}")
-    print(report)
+        model = train_model(
+            X_train,
+            y_train,
+            n_estimators,
+            max_depth
+        )
 
-    joblib.dump(model, "models/iris_model.joblib")
-    print("Model saved to models/iris_model.joblib")
+        acc, report = evaluate_model(model, X_test, y_test)
+
+        mlflow.log_metric("accuracy", acc)
+
+        print(f"Accuracy: {acc:.4f}")
+        print(report)
+
+        os.makedirs("models", exist_ok=True)
+        joblib.dump(model, "models/iris_model.joblib")
+
+        mlflow.log_artifact("models/iris_model.joblib")
+
+        print("Model saved to models/iris_model.joblib")
+        print("Experiment tracked successfully in MLflow!")
 
 
 if __name__ == "__main__":

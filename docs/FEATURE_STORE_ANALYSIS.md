@@ -1,3 +1,4 @@
+
 # Feature Store Analysis
 
 ## 1. Training-Serving Skew
@@ -8,10 +9,10 @@ A Feature Store helps reduce this problem by using the same registered feature d
 
 In this practical:
 
-- Historical features were retrieved from the Parquet data source using `get_historical_features()`.
+- Historical features were retrieved from the Parquet datasource using `get_historical_features()`.
 - Online features were retrieved from the SQLite online store using `get_online_features()`.
 - Both retrieval methods used the same registered `iris_feature_service`.
-- The same feature definitions were therefore used across the two retrieval workflows.
+- The same feature definitions were therefore used across both retrieval workflows.
 
 This provides consistency between the features used for model training and the features available for online serving.
 
@@ -30,7 +31,7 @@ In this practical:
 
 This avoids repeatedly implementing the same feature definitions for different machine learning tasks. It also provides a common and consistent way to access registered features.
 
-The reuse example successfully retrieved features for `sample_id` values 1, 2, and 3 using the existing `iris_feature_service`.
+The reuse example successfully retrieved features for `sample_id` values 1, 2, and 3. The features were also reused for K-Means clustering on all 149 Iris samples.
 
 ## 3. Centralized Feature Governance
 
@@ -60,5 +61,6 @@ The practical covered:
 - Online feature retrieval.
 - Historical feature retrieval.
 - Reuse of registered features through a Feature Service.
+- Application of retrieved features in K-Means clustering.
 
 The practical demonstrated how a Feature Store can provide a centralized and reusable approach to feature management while supporting both historical and online feature retrieval.
